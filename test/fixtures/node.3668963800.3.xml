@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="OpenStreetMap server" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+  <node id="3668963800" changeset="36252881" timestamp="2015-12-29T23:23:07Z" version="3" visible="true" user="Aboudrar Said" uid="2209556" lat="30.3178716" lon="-9.5189928">
+    <tag k="name" v="El Mzar ⵍⵎⵣⴰⵔ المزار"/>
+    <tag k="place" v="suburb"/>
+  </node>
+</osm>

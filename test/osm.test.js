@@ -13,6 +13,16 @@ mockOsm.test('[fetch] a specific version of an element', function(assert) {
   });
 });
 
+mockOsm.test('[fetch] most recent version of an element', function(assert) {
+  var client = osm(mockOsm.baseUrl);
+  client.fetch('node', 3668963800, null, function(err, data) {
+    assert.ifError(err, 'success');
+    var expected = fs.readFileSync(path.resolve(__dirname, 'fixtures', 'node.3668963800.5.xml'), 'utf8');
+    assert.equal(expected, data, 'expected data returned');
+    assert.end();
+  });
+});
+
 mockOsm.test('[fetch] returns 500 for networking failures', function(assert) {
   var client = osm(mockOsm.baseUrl);
   client.fetch('way', 123, 456, function(err, data) {

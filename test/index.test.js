@@ -12,6 +12,15 @@ mockOsm.test('[index] gets all xml', function(assert) {
   });
 });
 
+mockOsm.test('[index] version not included', function(assert) {
+  fetch(mockOsm.baseUrl, 'relation', 2453564, function(err, xml) {
+    assert.ifError(err, 'success');
+    var expected = fs.readFileSync(path.resolve(__dirname, 'expected', 'relation.2453564.1.xml'), 'utf8').trim();
+    assert.equal(xml, expected, 'expected output xml');
+    assert.end();
+  });
+});
+
 mockOsm.test('[index] element does not exist', function(assert) {
   fetch(mockOsm.baseUrl, 'way', 1, 2, function(err) {
     assert.equal(err.statusCode, 404, 'expected statusCode');

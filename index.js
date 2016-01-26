@@ -6,6 +6,11 @@ var async = require('queue-async');
 module.exports = function(baseUrl, type, id, version, callback) {
   var client = osm(baseUrl);
 
+  if (typeof version === 'function') {
+    callback = version;
+    version = null;
+  }
+
   client.fetch(type, id, version, function(err, parent) {
     if (err) return callback(err);
     var xmls = [parent];
@@ -26,7 +31,7 @@ module.exports = function(baseUrl, type, id, version, callback) {
                 err.statusCode = 500;
                 return callback(err);
               }
-              
+
               fetchRefs(elements[0], next);
             });
           });

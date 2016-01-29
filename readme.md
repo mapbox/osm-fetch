@@ -9,6 +9,10 @@ of the requested feature.
 
 If no version number is specified, the most recent available version is retrieved.
 
+Specifying the `--shallow` flag will **always** fetch the most current version,
+and if the feature is a relation, any member relations **will not** have their
+members resolved.
+
 ## Install
 
 ```
@@ -18,8 +22,12 @@ $ npm install -g osm-fetch
 ## Usage
 
 ```
-Usage: osm-fetch <type> <id> [version]
+Usage: osm-fetch <type> <id> [version] [--shallow]
 
-Example:
+Options:
+ -s, --shallow	Fetch XML for the most recent version and do not resolve member relations
+
+Examples:
   $ osm-fetch relation 2453564 1
+  $ osm-fetch relation 2453564 --shallow
 ```

@@ -3,12 +3,20 @@ var parse = require('./lib/parse');
 var aggregate = require('./lib/aggregate');
 var async = require('queue-async');
 
-module.exports = function(baseUrl, type, id, version, callback) {
+module.exports.full = full;
+module.exports.shallow = shallow;
+
+function shallow(baseUrl, type, id, callback) {
+  var client = osm(baseUrl);
+  client.fetchShallow(type, id, callback);
+}
+
+function full(baseUrl, type, id, version, callback) {
   var client = osm(baseUrl);
 
   if (typeof version === 'function') {
     callback = version;
-    return client.fetchCurrent(type, id, callback);
+    version = null;
   }
 
   client.fetch(type, id, version, function(err, parent) {
@@ -54,4 +62,4 @@ module.exports = function(baseUrl, type, id, version, callback) {
       });
     });
   });
-};
+}

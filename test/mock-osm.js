@@ -50,6 +50,7 @@ var server = http.createServer(function(req, res) {
     var xml = xmls.reduce(function(xml, filename) {
       var version = filename.split('.')[2];
       if (version === 'history') return xml;
+      if (version === 'full') return xml;
 
       if (version > xml.version) xml = {
         version: version,

@@ -8,7 +8,7 @@ module.exports = function(baseUrl, type, id, version, callback) {
 
   if (typeof version === 'function') {
     callback = version;
-    version = null;
+    return client.fetchCurrent(type, id, callback);
   }
 
   client.fetch(type, id, version, function(err, parent) {

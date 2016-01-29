@@ -13,7 +13,7 @@ var server = http.createServer(function(req, res) {
   }
 
   var uri = url.parse(req.url);
-  var pattern = /^\/api\/0.6\/(node|way|relation)\/(\d+)(\/(\d+|history))?$/;
+  var pattern = /^\/api\/0.6\/(node|way|relation)\/(\d+)(\/(\d+|history|full))?$/;
   var match = uri.pathname.match(pattern);
 
   function doesNotExist() {
@@ -25,7 +25,7 @@ var server = http.createServer(function(req, res) {
   var type = match[1];
   var id = Number(match[2]);
   var version = match[4];
-  version = version === 'history' ? version : Number(version);
+  version = version === 'history' || version === 'full' ? version : Number(version);
 
   if (type === 'way' && id === 123) {
     return res.socket.destroy();
@@ -43,7 +43,7 @@ var server = http.createServer(function(req, res) {
     if (!fs.existsSync(filename)) return doesNotExist();
 
     res.setHeader('Content-type', 'application/xml');
-    return res.end(fs.readFileSync(filename, 'utf8'));
+    return res.end(fs.readFileSync(filename, 'utf8').trim());
   }
 
   else {
@@ -60,7 +60,7 @@ var server = http.createServer(function(req, res) {
     }, { version: 0 });
 
     res.setHeader('Content-type', 'application/xml');
-    return res.end(fs.readFileSync(xml.filepath, 'utf8'));
+    return res.end(fs.readFileSync(xml.filepath, 'utf8').trim());
   }
 
   res.statusCode = 500;

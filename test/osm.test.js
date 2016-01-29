@@ -7,8 +7,8 @@ mockOsm.test('[fetch] a specific version of an element', function(assert) {
   var client = osm(mockOsm.baseUrl);
   client.fetch('node', 3668963800, 3, function(err, data) {
     assert.ifError(err, 'success');
-    var expected = fs.readFileSync(path.resolve(__dirname, 'fixtures', 'node.3668963800.3.xml'), 'utf8');
-    assert.equal(expected, data, 'expected data returned');
+    var expected = fs.readFileSync(path.resolve(__dirname, 'fixtures', 'node.3668963800.3.xml'), 'utf8').trim();
+    assert.equal(data, expected, 'expected data returned');
     assert.end();
   });
 });
@@ -17,8 +17,8 @@ mockOsm.test('[fetch] most recent version of an element', function(assert) {
   var client = osm(mockOsm.baseUrl);
   client.fetch('node', 3668963800, null, function(err, data) {
     assert.ifError(err, 'success');
-    var expected = fs.readFileSync(path.resolve(__dirname, 'fixtures', 'node.3668963800.5.xml'), 'utf8');
-    assert.equal(expected, data, 'expected data returned');
+    var expected = fs.readFileSync(path.resolve(__dirname, 'fixtures', 'node.3668963800.5.xml'), 'utf8').trim();
+    assert.equal(data, expected, 'expected data returned');
     assert.end();
   });
 });
@@ -45,8 +45,8 @@ mockOsm.test('[fetchVersionAt] correct version for a specified timestamp', funct
   var client = osm(mockOsm.baseUrl);
   client.fetchVersionAt('node', 3668963800, 1451531387000, function(err, data) {
     assert.ifError(err, 'success');
-    var expected = fs.readFileSync(path.resolve(__dirname, 'fixtures', 'node.3668963800.3.xml'), 'utf8');
-    assert.equal(expected, data, 'expected data returned');
+    var expected = fs.readFileSync(path.resolve(__dirname, 'fixtures', 'node.3668963800.3.xml'), 'utf8').trim();
+    assert.equal(data, expected, 'expected data returned');
     assert.end();
   });
 });

@@ -37,7 +37,7 @@ function full(baseUrl, type, id, version, callback) {
             parse(xml, function(err, elements) {
               if (err) {
                 err.statusCode = 500;
-                return callback(err);
+                return next(err);
               }
 
               fetchRefs(elements[0], next);

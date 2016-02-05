@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="OpenStreetMap server" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+  <way id="362662527" changeset="32919043" timestamp="2015-07-27T21:35:46Z" version="1" visible="true" user="Karta" uid="188704">
+    <nd ref="3669269217"/>
+    <nd ref="3669269219"/>
+    <nd ref="3669269218"/>
+    <nd ref="3669269220"/>
+    <nd ref="3669269217"/>
+    <tag k="landuse" v="farmland"/>
+  </way>
+</osm>

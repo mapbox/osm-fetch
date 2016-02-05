@@ -68,3 +68,13 @@ mockOsm.test('[fetchVersionAt] returns 500 for failure to parse xml', function(a
     assert.end();
   });
 });
+
+mockOsm.test('[fetchVersionAt]', function(assert) {
+  var client = osm(mockOsm.baseUrl);
+  client.fetchVersionAt('node', 1947033389, 1349405218000, function(err, data) {
+    assert.notOk(data, 'no data returned');
+    assert.ok(/^No version of node!1947033389 existed at/.test(err.message), 'expected error message');
+    assert.equal(err.statusCode, 500, 'expected statusCode');
+    assert.end();
+  });
+});

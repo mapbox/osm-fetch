@@ -58,3 +58,11 @@ mockOsm.test('[index] shallow fetch', function(assert) {
     assert.end();
   });
 });
+
+mockOsm.test('[index] nested ref timestamps relative to top-level parent', function(assert) {
+  full(mockOsm.baseUrl, 'relation', 1234, 1, function(err, xml) {
+    var expected = fs.readFileSync(path.resolve(__dirname, 'expected', 'relation.1234.1.xml'), 'utf8').trim();
+    assert.equal(xml, expected, 'expected output xml');
+    assert.end();
+  });
+});

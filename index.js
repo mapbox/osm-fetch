@@ -22,9 +22,9 @@ function full(baseUrl, type, id, version, callback) {
   client.fetch(type, id, version, function(err, parent) {
     if (err) return callback(err);
     var xmls = [parent];
+    var timestamp;
 
     function fetchRefs(element, callback) {
-      var timestamp = +new Date(element.timestamp);
       var queue = async();
 
       element.refs.forEach(function(ref) {
@@ -54,6 +54,8 @@ function full(baseUrl, type, id, version, callback) {
         err.statusCode = 500;
         return callback(err);
       }
+
+      timestamp = +new Date(elements[0].timestamp);
 
       fetchRefs(elements[0], function(err) {
         if (err) return callback(err);

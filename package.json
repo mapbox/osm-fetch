@@ -1,6 +1,6 @@
 {
   "name": "osm-fetch",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Fetch XML for a specific version of an OpenStreetMap feature",
   "main": "index.js",
   "scripts": {

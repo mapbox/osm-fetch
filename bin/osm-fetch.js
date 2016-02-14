@@ -8,7 +8,7 @@ var args = require('minimist')(process.argv.slice(2), {
 var baseUrl = 'https://www.openstreetmap.org';
 
 if (args.help || !args._[0] || !args._[1]) {
-  console.log('Usage: osm-fetch <type> <id> [version] [--shallow]');
+  console.log('Usage: osm-fetch [OPTIONS] <type> <id> [version]');
   console.log('');
   console.log('Options:');
   console.log(' -s, --shallow\tFetch XML for the most recent version and do not resolve member relations');

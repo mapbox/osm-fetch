@@ -11,13 +11,16 @@ function shallow(baseUrl, type, id, callback) {
   client.fetchShallow(type, id, callback);
 }
 
-function full(baseUrl, type, id, version, callback) {
+function full(baseUrl, type, id, options, callback) {
   var client = osm(baseUrl);
 
-  if (typeof version === 'function') {
-    callback = version;
-    version = null;
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
   }
+
+  var version = options.version;
+  var creationTime = options.creationTime;
 
   client.fetch(type, id, version, function(err, parent) {
     if (err) return callback(err);
@@ -49,19 +52,31 @@ function full(baseUrl, type, id, version, callback) {
       queue.awaitAll(callback);
     }
 
+    function allDone(err) {
+      if (err) return callback(err);
+      aggregate(xmls, function(err, result) {
+        callback(err, result, timestamp);
+      });
+    }
+
     parse(parent, function(err, elements) {
       if (err) {
         err.statusCode = 500;
         return callback(err);
       }
 
-      timestamp = +new Date(elements[0].timestamp);
+      if (!version) version = elements[0].version;
 
-      fetchRefs(elements[0], function(err) {
-        if (err) return callback(err);
-
-        aggregate(xmls, callback);
-      });
+      if (creationTime) {
+        timestamp = +new Date(elements[0].timestamp);
+        fetchRefs(elements[0], allDone);
+      } else {
+        client.finalTimestamp(type, id, version, function(err, finalTimestamp) {
+          if (err) return callback(err);
+          timestamp = finalTimestamp;
+          fetchRefs(elements[0], allDone);
+        });
+      }
     });
   });
 }

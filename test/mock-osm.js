@@ -17,6 +17,7 @@ var server = http.createServer(function(req, res) {
   var match = uri.pathname.match(pattern);
 
   function doesNotExist() {
+    if (process.env.DEBUG) console.log('%s %s', req.url, 404);
     res.statusCode = 404;
     res.end();
   }
@@ -42,6 +43,7 @@ var server = http.createServer(function(req, res) {
     var filename = path.join(__dirname, 'fixtures', [type, id, version].join('.') + '.xml');
     if (!fs.existsSync(filename)) return doesNotExist();
 
+    if (process.env.DEBUG) console.log('%s %s', req.url, 200);
     res.setHeader('Content-type', 'application/xml');
     return res.end(fs.readFileSync(filename, 'utf8').trim());
   }
@@ -60,10 +62,12 @@ var server = http.createServer(function(req, res) {
       return xml;
     }, { version: 0 });
 
+    if (process.env.DEBUG) console.log('%s %s', req.url, 200);
     res.setHeader('Content-type', 'application/xml');
     return res.end(fs.readFileSync(xml.filepath, 'utf8').trim());
   }
 
+  if (process.env.DEBUG) console.log('%s %s', req.url, 500);
   res.statusCode = 500;
   res.end();
 });

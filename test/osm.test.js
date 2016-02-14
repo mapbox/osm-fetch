@@ -78,3 +78,39 @@ mockOsm.test('[fetchVersionAt]', function(assert) {
     assert.end();
   });
 });
+
+mockOsm.test('[finalTimestamp] newer version exists', function(assert) {
+  var client = osm(mockOsm.baseUrl);
+  client.finalTimestamp('node', 3668963800, 3, function(err, timestamp) {
+    assert.ifError(err, 'success');
+    assert.equal(timestamp, +new Date('2016-01-01T02:00:03Z') - 1, 'expected timestamp');
+    assert.end();
+  });
+});
+
+mockOsm.test('[finalTimestamp] newer version does not exist', function(assert) {
+  var client = osm(mockOsm.baseUrl);
+  client.finalTimestamp('node', 3668963800, 5, function(err, timestamp) {
+    assert.ifError(err, 'success');
+    assert.ok(Date.now() - timestamp < 10, 'expected timestamp');
+    assert.end();
+  });
+});
+
+mockOsm.test('[finalTimestamp] returns 404 for non-existent element', function(assert) {
+  var client = osm(mockOsm.baseUrl);
+  client.finalTimestamp('way', 1, 1451531387000, function(err, data) {
+    assert.equal(err.statusCode, 404, 'expected statusCode');
+    assert.notOk(data, 'no data returned');
+    assert.end();
+  });
+});
+
+mockOsm.test('[finalTimestamp] returns 500 for failure to parse xml', function(assert) {
+  var client = osm(mockOsm.baseUrl);
+  client.finalTimestamp('node', 1, 1451531387000, function(err, data) {
+    assert.equal(err.statusCode, 500, 'expected statusCode');
+    assert.notOk(data, 'no data returned');
+    assert.end();
+  });
+});

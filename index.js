@@ -17,7 +17,7 @@ function at(baseUrl, type, id, timestamp, callback) {
 
   client.fetchVersionAt(type, id, timestamp, function(err, parent) {
     if (err) return callback(err);
-    getRefs(client, parent, timestamp, callback);
+    getRefs(client, parent, timestamp, async(100), callback);
   });
 }
 
@@ -31,16 +31,14 @@ function full(baseUrl, type, id, version, callback) {
 
   client.fetch(type, id, version, function(err, parent) {
     if (err) return callback(err);
-    getRefs(client, parent, null, callback);
+    getRefs(client, parent, null, async(100), callback);
   });
 }
 
-function getRefs(client, parent, timestamp, callback) {
+function getRefs(client, parent, timestamp, queue, callback) {
   var xmls = [parent];
 
   function fetchRefs(element, callback) {
-    var queue = async();
-
     element.refs.forEach(function(ref) {
       queue.defer(function(next) {
         client.fetchVersionAt(ref.type, ref.id, timestamp, function(err, xml) {
@@ -60,13 +58,15 @@ function getRefs(client, parent, timestamp, callback) {
       });
     });
 
-    queue.awaitAll(callback);
+    callback();
   }
 
-  function allDone(err) {
-    if (err) return callback(err);
-    aggregate(xmls, function(err, result) {
-      callback(err, result, timestamp);
+  function allDone() {
+    queue.awaitAll(function(err) {
+      if (err) return callback(err);
+      aggregate(xmls, function(err, result) {
+        callback(err, result, timestamp);
+      });
     });
   }
 

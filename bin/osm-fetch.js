@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require('https').globalAgent.keepAlive = true;
 var fetch = require('..');
 var args = require('minimist')(process.argv.slice(2), {
   boolean: ['s', 'shallow']

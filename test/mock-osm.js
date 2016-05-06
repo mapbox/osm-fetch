@@ -6,7 +6,7 @@ var tape = require('tape');
 
 var fixtures = fs.readdirSync(path.join(__dirname, 'fixtures'));
 
-var server = http.createServer(function(req, res) {
+function osm(req, res) {
   if (req.method !== 'GET') {
     res.statusCode = 400;
     return res.end();
@@ -70,12 +70,19 @@ var server = http.createServer(function(req, res) {
   if (process.env.DEBUG) console.log('%s %s', req.url, 500);
   res.statusCode = 500;
   res.end();
-});
+}
 
 module.exports = {
   baseUrl: 'http://localhost:20009',
   test: function(name, callback) {
     tape(name, function(assert) {
+      var context = { requests: 0 };
+
+      var server = http.createServer(function(req, res) {
+        context.requests++;
+        osm(req, res);
+      });
+
       server.listen(20009, function(err) {
         if (err) throw err;
 
@@ -89,7 +96,7 @@ module.exports = {
           });
         };
 
-        callback(assert);
+        callback.call(context, assert);
       });
     });
   }

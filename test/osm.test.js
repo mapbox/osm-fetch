@@ -41,6 +41,19 @@ mockOsm.test('[fetch] returns 404 for non-existent element', function(assert) {
   });
 });
 
+mockOsm.test('[fetch] get caching', function(assert) {
+  var context = this;
+  var client = osm(mockOsm.baseUrl);
+  client.fetch('node', 3668963800, 3, function(err) {
+    if (err) return assert.end(err);
+    client.fetch('node', 3668963800, 3, function(err) {
+      if (err) return assert.end(err);
+      assert.equal(context.requests, 1, 'cached requests');
+      assert.end();
+    });
+  });
+});
+
 mockOsm.test('[fetchVersionAt] correct version for a specified timestamp', function(assert) {
   var client = osm(mockOsm.baseUrl);
   client.fetchVersionAt('node', 3668963800, 1451531387000, function(err, data) {

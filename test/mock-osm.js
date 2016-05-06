@@ -32,6 +32,11 @@ function osm(req, res) {
     return res.socket.destroy();
   }
 
+  if (type === 'node' && id === 987654) {
+    res.statusCode = 408;
+    return res.end();
+  }
+
   var re = new RegExp('^' + [type, id].join('.') + '.+\.xml$');
   var xmls = fixtures.filter(function(filename) {
     return re.test(filename);

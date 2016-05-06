@@ -41,6 +41,15 @@ mockOsm.test('[fetch] returns 404 for non-existent element', function(assert) {
   });
 });
 
+mockOsm.test('[fetch] returns 408 for request timeout', function(assert) {
+  var client = osm(mockOsm.baseUrl);
+  client.fetch('node', 987654, 3, function(err, data) {
+    assert.equal(err.statusCode, 408, 'expected statusCode');
+    assert.notOk(data, 'no data returned');
+    assert.end();
+  });
+});
+
 mockOsm.test('[fetch] get caching', function(assert) {
   var context = this;
   var client = osm(mockOsm.baseUrl);
